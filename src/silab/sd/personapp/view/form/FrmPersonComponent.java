@@ -14,7 +14,9 @@ import java.util.logging.Logger;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import silab.sd.personapp.view.component.validator.Validator;
 import silab.sd.personapp.view.component.validator.impl.RequiredStringValidator;
+import silab.sd.personapp.view.component.validator.impl.WordStringValidator;
 
 /**
  *
@@ -133,7 +135,7 @@ public class FrmPersonComponent extends javax.swing.JDialog {
         } catch (Exception ex) {
             Logger.getLogger(FrmPersonComponent.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         //uzmi vrednost za rodjendan
         try {
             Date birtday = (Date) inputBirthday.getValue();
@@ -157,18 +159,20 @@ public class FrmPersonComponent extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     private void prepareComponents() {
-        inputFirstname.setValidator(new RequiredStringValidator());
+        List<Validator> listaValidatora = new ArrayList<>();
+        listaValidatora.add(new RequiredStringValidator());
+        listaValidatora.add(new WordStringValidator());
+        inputFirstname.setValidator(listaValidatora);
         inputFirstname.getLblText().setText("Firstname:");
         inputFirstname.getLblErrorValue().setText("");
 
-        inputLastname.setValidator(new RequiredStringValidator());
+        inputLastname.setValidator(listaValidatora);//da je za prezime neka nova kombinacija validatora, pravila bi novu listu
         inputLastname.getLblText().setText("Lastname:");
         inputLastname.getLblErrorValue().setText("");
 
         inputGender.getLblText().setText("Gender:");
         inputGender.getLblErrorValue().setText("");
         inputGender.getCbValue().removeAllItems();
-
         //inputGender.getCbValue().addItem("Male");
         //inputGender.getCbValue().addItem("Female");
         //2. nacin:
@@ -180,9 +184,9 @@ public class FrmPersonComponent extends javax.swing.JDialog {
         };
 
         inputGender.getCbValue().setModel(new DefaultComboBoxModel<>(genders.toArray()));
-        
+
         inputBirthday.getLblText().setText("Birthday:");
         inputBirthday.getLblErrorValue().setText("");
-        
+
     }
 }

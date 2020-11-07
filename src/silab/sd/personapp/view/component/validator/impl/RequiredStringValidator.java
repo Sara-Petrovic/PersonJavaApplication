@@ -16,8 +16,12 @@ public class RequiredStringValidator implements Validator{
 
     @Override
     public void validate(Object object) throws ValidationException {
-        if(!(object instanceof String)) throw new ValidationException("Object is not String!");
-        if(object.toString().isEmpty()) throw new ValidationException("String is empty!");
+        if (!(object instanceof String)) {
+            throw new ValidationException("Object is not String!");
+        }
+        if (object.toString().isEmpty()) {
+            throw new ValidationException("String is empty!");
+        }
     }
     
 }

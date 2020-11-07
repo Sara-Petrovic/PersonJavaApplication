@@ -5,6 +5,7 @@
  */
 package silab.sd.personapp.view.component;
 
+import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import silab.sd.personapp.view.component.exception.ValidationException;
@@ -16,7 +17,9 @@ import silab.sd.personapp.view.component.validator.Validator;
  */
 public class InputTextfieldPanel extends javax.swing.JPanel implements GetValue {
 
-    private Validator validator;
+    
+    //za dodavanje vise validatora, stavljam listu
+    private List<Validator> validator;
 
     /**
      * Creates new form InputTextfieldPanel
@@ -106,7 +109,10 @@ public class InputTextfieldPanel extends javax.swing.JPanel implements GetValue 
 
         try {
             if (validator != null) {
-                validator.validate(txtValue.getText().trim());
+                for (Validator v : validator) {
+                    v.validate(txtValue.getText().trim());
+                }
+                
             }
             return txtValue.getText();
 
@@ -116,8 +122,10 @@ public class InputTextfieldPanel extends javax.swing.JPanel implements GetValue 
         }
     }
 
-    public void setValidator(Validator validator) {
+    public void setValidator(List<Validator> validator) {
         this.validator = validator;
     }
+
+    
 
 }
