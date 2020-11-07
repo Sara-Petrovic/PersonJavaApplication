@@ -5,10 +5,16 @@
  */
 package silab.sd.personapp.view.form;
 
-
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import silab.sd.personapp.view.component.validator.impl.RequiredStringValidator;
 
 /**
  *
@@ -38,6 +44,8 @@ public class FrmPersonComponent extends javax.swing.JDialog {
         btnSave = new javax.swing.JButton();
         inputFirstname = new silab.sd.personapp.view.component.InputTextfieldPanel();
         inputLastname = new silab.sd.personapp.view.component.InputTextfieldPanel();
+        inputGender = new silab.sd.personapp.view.component.InputComboPanel();
+        inputBirthday = new silab.sd.personapp.view.component.InputDateSeparateElements();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -61,8 +69,10 @@ public class FrmPersonComponent extends javax.swing.JDialog {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(inputFirstname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(inputLastname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 25, Short.MAX_VALUE)))
+                            .addComponent(inputLastname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(inputGender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(inputBirthday, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -72,9 +82,13 @@ public class FrmPersonComponent extends javax.swing.JDialog {
                 .addComponent(inputFirstname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(inputLastname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(133, 133, 133)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(inputGender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(inputBirthday, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
                 .addComponent(btnSave)
-                .addGap(0, 13, Short.MAX_VALUE))
+                .addGap(30, 30, 30))
         );
 
         pack();
@@ -83,7 +97,6 @@ public class FrmPersonComponent extends javax.swing.JDialog {
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
         //uzmi vrednost za ime
-        
 
         //sta je problem ovde? sta ako iz komponente ne uzimamo tekst? npr. za datum
         //moze li na jedinstveni nacin da se uzme vrednost iz bilo koje komponente?? uzeti text ili radiobutton na isti nacin
@@ -98,23 +111,37 @@ public class FrmPersonComponent extends javax.swing.JDialog {
             //    inputFirstname.getLblErrorValue().setText("Ime je obavezno polje.");
             //}
 
-            
-            JOptionPane.showMessageDialog(this, "Ime: "+firstname);    
-           
-
+            JOptionPane.showMessageDialog(this, "Ime: " + firstname);
 
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Validacija nije prosla.");   
+            JOptionPane.showMessageDialog(this, "Validacija nije prosla.");
         }
 
         try {
             //uzmi vrednost za prezime
             String lastname = inputLastname.getValue().toString();
-             JOptionPane.showMessageDialog(this, "Prezime: "+lastname);    
+            JOptionPane.showMessageDialog(this, "Prezime: " + lastname);
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Validacija nije prosla.");            }
-            
-            
+            JOptionPane.showMessageDialog(this, "Validacija nije prosla.");
+        }
+
+        //uzmi vrednost za gender
+        try {
+            String gender = inputGender.getValue().toString();
+            JOptionPane.showMessageDialog(this, "Pol: " + gender);
+
+        } catch (Exception ex) {
+            Logger.getLogger(FrmPersonComponent.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        //uzmi vrednost za rodjendan
+        try {
+            Date birtday = (Date) inputBirthday.getValue();
+            JOptionPane.showMessageDialog(this, "Datum rodjenja: " + new SimpleDateFormat("dd.mm.yyyy.").format(birtday));
+
+        } catch (Exception ex) {
+            Logger.getLogger(FrmPersonComponent.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnSaveActionPerformed
 
     /**
@@ -123,15 +150,39 @@ public class FrmPersonComponent extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSave;
+    private silab.sd.personapp.view.component.InputDateSeparateElements inputBirthday;
     private silab.sd.personapp.view.component.InputTextfieldPanel inputFirstname;
+    private silab.sd.personapp.view.component.InputComboPanel inputGender;
     private silab.sd.personapp.view.component.InputTextfieldPanel inputLastname;
     // End of variables declaration//GEN-END:variables
 
     private void prepareComponents() {
+        inputFirstname.setValidator(new RequiredStringValidator());
         inputFirstname.getLblText().setText("Firstname:");
         inputFirstname.getLblErrorValue().setText("");
 
+        inputLastname.setValidator(new RequiredStringValidator());
         inputLastname.getLblText().setText("Lastname:");
         inputLastname.getLblErrorValue().setText("");
+
+        inputGender.getLblText().setText("Gender:");
+        inputGender.getLblErrorValue().setText("");
+        inputGender.getCbValue().removeAllItems();
+
+        //inputGender.getCbValue().addItem("Male");
+        //inputGender.getCbValue().addItem("Female");
+        //2. nacin:
+        List<String> genders = new ArrayList<String>() {
+            {
+                add("Male");
+                add("Female");
+            }
+        };
+
+        inputGender.getCbValue().setModel(new DefaultComboBoxModel<>(genders.toArray()));
+        
+        inputBirthday.getLblText().setText("Birthday:");
+        inputBirthday.getLblErrorValue().setText("");
+        
     }
 }

@@ -10,5 +10,6 @@ package silab.sd.personapp.domain;
  * @author Sara
  */
 public enum Gender {
-    
+    MALE,
+    FEMALE
 }

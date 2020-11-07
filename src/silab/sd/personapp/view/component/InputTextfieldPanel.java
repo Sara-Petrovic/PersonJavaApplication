@@ -7,12 +7,16 @@ package silab.sd.personapp.view.component;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import silab.sd.personapp.view.component.exception.ValidationException;
+import silab.sd.personapp.view.component.validator.Validator;
 
 /**
  *
  * @author Sara
  */
-public class InputTextfieldPanel extends javax.swing.JPanel implements GetValue{
+public class InputTextfieldPanel extends javax.swing.JPanel implements GetValue {
+
+    private Validator validator;
 
     /**
      * Creates new form InputTextfieldPanel
@@ -93,12 +97,27 @@ public class InputTextfieldPanel extends javax.swing.JPanel implements GetValue{
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public Object getValue() throws Exception{
-         lblErrorValue.setText("");
-        if (txtValue.getText().isEmpty()) {
-            lblErrorValue.setText("Polje je obavezno.");
-            throw new Exception("Polje je obavezno.");
+    public Object getValue() throws Exception {
+        lblErrorValue.setText("");
+//        if (txtValue.getText().isEmpty()) {
+//            lblErrorValue.setText("Polje je obavezno.");
+//            throw new Exception("Polje je obavezno.");
+//        }
+
+        try {
+            if (validator != null) {
+                validator.validate(txtValue.getText().trim());
+            }
+            return txtValue.getText();
+
+        } catch (ValidationException e) {
+            lblErrorValue.setText(e.getMessage());
+            throw new Exception(e.getMessage());
         }
-        return txtValue.getText();
     }
+
+    public void setValidator(Validator validator) {
+        this.validator = validator;
+    }
+
 }
